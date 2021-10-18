@@ -5,7 +5,7 @@ import pandas as pd
 import datetime
 import xlrd
 from collections import Counter
-import random
+from random import randint
 
 def main():
 
@@ -108,15 +108,26 @@ def main():
     def download_success():
         """Success message on download"""
         st.success("Download Successful!")
+        st.session_state.fu_key = str(randint(1000, 100000000))
         st.empty()
     
     ########################################### App ####################################
     ### Title
     st.title("Phone + Date Field Cleaner")
 
+    ### Initialize session state
+    if 'fu_key' not in st.session_state:
+	    st.session_state.fu_key = '0'
+
     ### Section 1: Upload source file
     st.header("Step 1: Upload File")
-    input_file = st.file_uploader("Upload excel file here", type=['xls','xlsx','csv'], key='key_')
+    input_file = st.file_uploader("Upload excel file here", type=['xls','xlsx','csv'],key=st.session_state.fu_key)
+
+    # reset_file = st.button('Clear File')
+    # if reset_file:
+    #     st.session_state.fu_key = str(randint(1000, 100000000))
+    #     st.stop()
+
 
     if input_file is not None:
         if input_file.name.endswith('.csv'):
